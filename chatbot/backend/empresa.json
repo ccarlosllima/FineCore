@@ -1,0 +1,8 @@
+{
+    "nome": "Pizzaria Napoli",
+    "horario": "18h às 23h",
+    "endereco": "Rua das Flores, 123 - Bairro Centro",
+    "servicos": ["Pizzas tradicionais", "Refrigerantes", "Pizza doce"],
+    "pagamento": ["Pix", "Cartão de crédito", "Dinheiro"],
+    "entrega": "R$ 5,00 para bairros próximos"
+}
