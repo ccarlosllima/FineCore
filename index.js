@@ -1,10 +1,17 @@
-import { readFile } from "fs/promises"
+import {readdir, readFile } from "fs/promises"
+import path from "path"
 
-async function lerCNAB() {
-    const dados = await readFile('./cnab.txt', 'utf-8')
+async function lerCNAB(pasta, arquivo) {
+    const caminhoArquivo = path.resolve(
+        path.join(pasta,arquivo)
+    )
+    const dados = await readFile(caminhoArquivo, 'utf-8')
     const linhas = dados.split("\n")
     let total = 0
     for (const linha of linhas) {
+        if (linha === "") {
+            continue
+        }
         const dadosLinha = linha.split("|")
         const dadosCliente = {
             "codigo": dadosLinha[0],
@@ -13,18 +20,25 @@ async function lerCNAB() {
             "valor": Number(dadosLinha[3])
         }
         total += dadosCliente.valor
-        console.log(dadosCliente)
+        // console.log(dadosCliente)
     }
     return total
 }
 
-lerCNAB()
+let pasta = './arquivo'
+let fileName = 'cnab.txt'
+
+const arquivos = await readdir(pasta)
+
+console.log(arquivos)
+
+lerCNAB(pasta, fileName)
     .then((total) => {
         console.log("valor total:", total)
         console.log('arquivo lido')
     })
-    .catch(() => {
-        console.log("Arquivo não encontrado ")
+    .catch((err) => {
+        console.log("Deu ruim: ", err)
     })
 
 
