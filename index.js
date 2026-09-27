@@ -1,48 +1,59 @@
-import {readdir, readFile } from "fs/promises"
+import { readdir, readFile } from "fs/promises"
 import path from "path"
 
-async function lerCNAB(pasta, arquivo) {
-    const caminhoArquivo = path.resolve(
-        path.join(pasta,arquivo)
-    )
-    const dados = await readFile(caminhoArquivo, 'utf-8')
-    const linhas = dados.split("\n")
+async function processarCnab(files) {
+    const dadosCnab = (await Promise.all(
+        files.map(file => readFile(file, 'utf-8'))
+    )).map(dados => dados.split("\n"))
+    
     let total = 0
-    for (const linha of linhas) {
-        if (linha === "") {
-            continue
+    for (const linhas of dadosCnab) {
+        for (const linha of linhas) {
+            if (linha === "") {
+                continue
+            }
+            const dadosLinha = linha.split("|")
+            const dadosCliente = {
+                "codigo": dadosLinha[0],
+                "cliente": dadosLinha[1],
+                "tipoPessoa": dadosLinha[2],
+                "valor": Number(dadosLinha[3])
+            }
+            total += dadosCliente.valor
+            console.log(dadosCliente)
         }
-        const dadosLinha = linha.split("|")
-        const dadosCliente = {
-            "codigo": dadosLinha[0],
-            "cliente": dadosLinha[1],
-            "tipoPessoa": dadosLinha[2],
-            "valor": Number(dadosLinha[3])
-        }
-        total += dadosCliente.valor
-        // console.log(dadosCliente)
     }
     return total
+
 }
 
-let pasta = './arquivo'
-let fileName = 'cnab.txt'
 
-const arquivos = await readdir(pasta)
+async function obterArquivos(pasta) {
+    let files = []
+    const arquivos = await readdir(pasta) //obtem os arquivos da 
 
-console.log(arquivos)
+    for (const arquivo of arquivos) {
+        if (!arquivo.endsWith(".txt")) {
+            continue
+        }
+        const caminho = path.resolve(
+            path.join(pasta, arquivo)
+        )
+        files.push(caminho) //devolve o arquivo
+    }
+    return files
+}
 
-lerCNAB(pasta, fileName)
-    .then((total) => {
-        console.log("valor total:", total)
-        console.log('arquivo lido')
+
+let file = await obterArquivos('arquivo2')
+processarCnab(file)
+    .then(total => {
+        console.log("Valor total:", total)
     })
-    .catch((err) => {
-        console.log("Deu ruim: ", err)
+    .catch(err => {
+        console.log("Deu ruim:", err)
     })
 
-
-console.log('Fim do programa')
 
 
 

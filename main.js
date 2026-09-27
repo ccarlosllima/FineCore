@@ -1,19 +1,18 @@
-const arquivos = [
-  "retorno_001.txt",
-  "retorno_002.txt",
-  "retorno_003.txt",
-  "imagem.png",
-  "audio.avg",
-  "foto.gpeg"
-]
+import { readdir } from "fs/promises"
+import path from "path"
 
-for (const arquivo of arquivos) {
-    // if (arquivo.slice(-4) !== ".txt") {
-    //     continue
-    // }
-
-    if (!arquivo.endsWith(".txt")) {
-        continue
+async function processarPasta(pasta) {
+    const arquivos = await readdir(pasta)
+    for (const arquivo of arquivos) {
+        if (!arquivo.endsWith(".txt")) {
+            continue
+        }
+        const caminho = path.resolve(
+            path.join(pasta, arquivo)
+        )
+       console.log('Processando o arquivo ', caminho)
     }
-    console.log(arquivo)
 }
+
+
+processarPasta('arquivo')
