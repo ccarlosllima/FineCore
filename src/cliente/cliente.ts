@@ -1,5 +1,3 @@
-import { boolean, number } from "zod"
-
 interface ClienteInterface {
     id: number,
     name: string,

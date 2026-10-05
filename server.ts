@@ -1,34 +1,34 @@
 import express, { type Express, type Request, type Response } from 'express';
+import { atualizarClienteSchema, clienteSchema } from './src/cliente/cliente.schema';
 import * as z from "zod"
-
-import { 
-    buscarCliente, 
-    crearCliente, 
-    buscarClientes, 
-    atualizarCliente, 
+import {
+    buscarCliente,
+    crearCliente,
+    buscarClientes,
+    atualizarCliente,
     deleteCliente
 } from './src/cliente/cliente';
 
 const app: Express = express();
 app.use(express.json())
 
-const clienteSchema = z.object({
-    name: z.string('O formato informado é inválido'),
-    limit: z.number('Deve ser informado apenas numeros'),
-})
-
-const atualizarClienteSchema = z.object({
-    name: z.string().optional(),
-    limit: z.number().optional(),
-    ativo: z.boolean().optional()
-})
+function obterId(req: Request): number | null {
+    const id = Number(req.params.id)
+    if (isNaN(id)) {
+        return null
+    }
+    return id
+}
 
 app.get('/cliente/:id', (req: Request, res: Response) => {
-    const clientId = Number(req.params.id)
-    if (isNaN(clientId)) {
-        return res.status(400).json({ erro: 'O ID deve ser um numero' })
+    const clienteId = obterId(req)
+    if (clienteId === null) {
+        return res.status(400).json({
+            erro: "O id deve ser um numero"
+        })
     }
-    const cliente = buscarCliente(clientId)
+
+    const cliente = buscarCliente(clienteId)
     if (!cliente) {
         return res.status(404).json({ erro: 'Cliente não encontrado' })
     }
@@ -63,11 +63,12 @@ app.post('/cliente', (req: Request, res: Response) => {
 })
 
 app.patch('/cliente/:id', (req: Request, res: Response) => {
-    const clientId = Number(req.params.id)
-    if (isNaN(clientId)) {
-        return res.status(400).json({ erro: 'O ID deve ser um numero' })
+    const clienteId = obterId(req)
+    if (clienteId === null) {
+        return res.status(400).json({
+            erro: "O id deve ser um numero"
+        })
     }
-
     const resultado = atualizarClienteSchema.safeParse(req.body)
 
     if (!resultado.success) {
@@ -77,7 +78,7 @@ app.patch('/cliente/:id', (req: Request, res: Response) => {
         })
     }
     const dados = resultado.data
-    const cliente = atualizarCliente(clientId, dados)
+    const cliente = atualizarCliente(clienteId, dados)
     if (!cliente) {
         return res.status(404).json({ erro: 'Cliente não encontrado' })
     }
@@ -85,11 +86,15 @@ app.patch('/cliente/:id', (req: Request, res: Response) => {
 });
 
 app.delete('/cliente/:id', (req: Request, res: Response) => {
-    const clientId = Number(req.params.id)
-    if (isNaN(clientId)) {
-        return res.status(400).json({ erro: 'O ID deve ser um numero' })
+
+    const clienteId = obterId(req)
+    if (clienteId === null) {
+        return res.status(400).json({
+            erro: "O id deve ser um numero"
+        })
     }
-    const cliente = deleteCliente(clientId)
+
+    const cliente = deleteCliente(clienteId)
     if (!cliente) {
         return res.status(404).json({ erro: 'Cliente não encontrado' })
     }
@@ -98,4 +103,6 @@ app.delete('/cliente/:id', (req: Request, res: Response) => {
 
 app.listen(8000);
 console.log('Servidor rodando na porta: 8000')
+
+
 
