@@ -20,13 +20,3 @@ export function validaErroSchema(resultado: { success: boolean, error?: any}) {
     }
     return null
 }
-
-/*
-    if (!resultado.success) {
-        return res.status(400).json({
-            erro: 'Dados inválidos',
-            detalhes: z.flattenError(resultado.error).fieldErrors
-        })
-    }
-    const dados = resultado.data
-*/

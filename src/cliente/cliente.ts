@@ -69,8 +69,10 @@ export function crearCliente(cliente: DadosCriacaoCliente): Cliente | null {
     if (cliente.name === 'pedro') {
         return null
     }
+    console.log(cliente)
+    
     return new Cliente(
-        1,
+        30,
         cliente.name,
         cliente.limit,
         true
