@@ -1,6 +1,5 @@
 import express, { type Express, type Request, type Response } from 'express';
-import { atualizarClienteSchema, clienteSchema } from './src/cliente/cliente.schema';
-import * as z from "zod"
+import { atualizarClienteSchema, clienteSchema, validaErroSchema } from './src/cliente/cliente.schema';
 import {
     buscarCliente,
     crearCliente,
@@ -71,14 +70,13 @@ app.patch('/cliente/:id', (req: Request, res: Response) => {
     }
     const resultado = atualizarClienteSchema.safeParse(req.body)
 
-    if (!resultado.success) {
-        return res.status(400).json({
-            erro: 'Dados inválidos',
-            detalhes: z.flattenError(resultado.error).fieldErrors
-        })
+    const erroValidacao = validaErroSchema(resultado)
+    if (erroValidacao) {
+        return res.status(400).json(erroValidacao)
     }
-    const dados = resultado.data
-    const cliente = atualizarCliente(clienteId, dados)
+
+    const cliente = atualizarCliente(clienteId, resultado.data)
+    
     if (!cliente) {
         return res.status(404).json({ erro: 'Cliente não encontrado' })
     }
