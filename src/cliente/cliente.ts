@@ -5,10 +5,10 @@ interface ClienteInterface {
     ativo: boolean
 }
 
-type DadosCriacaoCliente = Omit<ClienteInterface, "id" | "ativo">
-type DadosAtualizacaoCliente = Partial<Omit<ClienteInterface, "id">>
+export type DadosCriacaoCliente = Omit<ClienteInterface, "id" | "ativo">
+export type DadosAtualizacaoCliente = Partial<Omit<ClienteInterface, "id">>
 
-class Cliente implements ClienteInterface {
+export class Cliente implements ClienteInterface {
     constructor(
         public id: number,
         public name: string,
@@ -72,7 +72,7 @@ export function crearCliente(cliente: DadosCriacaoCliente): Cliente | null {
     console.log(cliente)
     
     return new Cliente(
-        30,
+        37,
         cliente.name,
         cliente.limit,
         true
