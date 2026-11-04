@@ -1,5 +1,5 @@
 import { Router} from "express";
-import { middlewareValidation } from './cliente.middleware' 
+import { middlewareValidation, middlewarePaginationValidation } from './cliente.middleware' 
 import {
     criarClienteController,
     atualizaClienteController,
@@ -11,7 +11,7 @@ import {
 
 const router = Router()
 
-router.get('/clientes', buscarClientesController) 
+router.get('/clientes', middlewarePaginationValidation, buscarClientesController) 
 router.get('/cliente/:id',middlewareValidation, buscarClienteController)
 router.post('/cliente', criarClienteController)
 router.patch('/cliente/:id',middlewareValidation, atualizaClienteController)

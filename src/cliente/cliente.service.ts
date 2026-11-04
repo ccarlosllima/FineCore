@@ -21,28 +21,32 @@ export function crearClienteService(dadosCliente: DadosCriacaoCliente): Cliente 
 }
 
 export function buscarClienteService(id: number): Cliente {
-    const Cliente =  buscarCliente(id)
-    if(!Cliente){
+    const Cliente = buscarCliente(id)
+    if (!Cliente) {
         throw new AppError('Cliente não encontrado', 404)
     }
     return Cliente
 }
 
-export function buscarClientesService(): Cliente[] {
-    return buscarClientes()
+export function buscarClientesService(page: number, limit: number): Cliente[] {
+    const offset = calculaOffSet(page, limit)
+    return buscarClientes(offset, limit)
 }
 
 export function atualizaClienteService(id: number, dadosCliente: DadosAtualizacaoCliente): Cliente {
     const Cliente = atualizarCliente(id, dadosCliente)
-      if (!Cliente) {
-       throw new AppError('Cliente não encontrado', 404)
+    if (!Cliente) {
+        throw new AppError('Cliente não encontrado', 404)
     }
     return Cliente
 }
 
 export function deleteClienteService(id: number): void {
 
-    if(!deleteCliente(id)){
+    if (!deleteCliente(id)) {
         throw new AppError('Cliente não encontrado', 404)
     }
+}
+export function calculaOffSet(page: number, limit: number) {
+    return (page - 1) * limit
 }
