@@ -11,6 +11,7 @@ import {
     from './cliente'
 
 import { AppError } from '../errors/AppError'
+import type { ResultadoPaginacao } from './cliente'
 
 export function crearClienteService(dadosCliente: DadosCriacaoCliente): Cliente {
     const Cliente = crearCliente(dadosCliente)
@@ -28,9 +29,9 @@ export function buscarClienteService(id: number): Cliente {
     return Cliente
 }
 
-export function buscarClientesService(page: number, limit: number): Cliente[] {
+export function buscarClientesService(page: number, limit: number, name?: string, ativo?:boolean): ResultadoPaginacao {
     const offset = calculaOffSet(page, limit)
-    return buscarClientes(offset, limit)
+    return buscarClientes(offset, limit, name, ativo)
 }
 
 export function atualizaClienteService(id: number, dadosCliente: DadosAtualizacaoCliente): Cliente {

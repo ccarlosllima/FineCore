@@ -1,5 +1,4 @@
 import type { Request, Response } from 'express'
-import { calculaOffSet } from './cliente.service';
 import { atualizarClienteSchema, clienteSchema, validaErroSchema } from './cliente.schema';
 import {
     crearClienteService,
@@ -9,9 +8,11 @@ import {
     deleteClienteService
 } from './cliente.service';
 
-interface Pagination  {
+interface Pagination {
     page: number
     limit: number
+    name: string
+    ativo: boolean
 }
 
 function obterId(req: Request): number {
@@ -37,10 +38,17 @@ export function buscarClienteController(req: Request, res: Response) {
 
 export function buscarClientesController(req: Request, res: Response) {
 
-    const {page, limit} = res.locals.pagination as Pagination   
- 
-    const clientes = buscarClientesService(page, limit)
-    return res.status(200).json(clientes)
+    const { page, limit, name, ativo } = res.locals.pagination as Pagination
+    const resutado = buscarClientesService(page, limit, name, ativo)
+    const totalPages = Math.ceil(resutado.total / limit)
+
+    return res.status(200).json({
+        data: resutado.data,
+        total: resutado.total,
+        page: page,
+        limit: limit,
+        totalPages: totalPages
+    })
 }
 
 export function atualizaClienteController(req: Request, res: Response) {
@@ -55,6 +63,6 @@ export function atualizaClienteController(req: Request, res: Response) {
 
 export function deleteClienteController(req: Request, res: Response) {
     const clienteId = obterId(req)
-    const cliente = deleteClienteService(clienteId)
+    deleteClienteService(clienteId)
     return res.sendStatus(204)
 }

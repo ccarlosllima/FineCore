@@ -3,6 +3,11 @@ interface ClienteInterface {
     name: string,
     limit: number,
     ativo: boolean
+
+}
+export interface ResultadoPaginacao {
+    data: Cliente[]
+    total: number
 }
 
 export type DadosCriacaoCliente = Omit<ClienteInterface, "id" | "ativo">
@@ -35,18 +40,18 @@ export function buscarCliente(id: number): Cliente | null {
     )
 }
 
-export function buscarClientes(offset: number, limit: number): Cliente[] {
+export function buscarClientes(offset: number, limit: number, name?: string, ativo?: boolean): ResultadoPaginacao {
 
     const clientes = [
-        { id: 1, name: 'Carlos', limit: 500, ativo: true },
+        { id: 1, name: 'Carlos', limit: 500, ativo: false },
         { id: 2, name: 'Pamela', limit: 1500, ativo: true },
-        { id: 3, name: 'Maria Clara', limit: 500, ativo: true },
-        { id: 4, name: 'Ana Bastos', limit: 500, ativo: true },
-        { id: 5, name: 'João Silva', limit: 1000, ativo: true },
-        { id: 6, name: 'Mariana Costa', limit: 2000, ativo: true },
-        { id: 7, name: 'Pedro Santos', limit: 500, ativo: true },
-        { id: 8, name: 'Juliana Oliveira', limit: 1500, ativo: true },
-        { id: 9, name: 'Lucas Ferreira', limit: 3000, ativo: true },
+        { id: 3, name: 'Maria Clara', limit: 500, ativo: false },
+        { id: 4, name: 'Ana Bastos', limit: 500, ativo: false },
+        { id: 5, name: 'João Silva', limit: 1000, ativo: false },
+        { id: 6, name: 'Mariana Costa', limit: 2000, ativo: false },
+        { id: 7, name: 'Pedro Santos', limit: 500, ativo: false },
+        { id: 8, name: 'Juliana Oliveira', limit: 1500, ativo: false },
+        { id: 9, name: 'Lucas Ferreira', limit: 3000, ativo: false },
         { id: 10, name: 'Beatriz Almeida', limit: 500, ativo: true },
         { id: 11, name: 'Rafael Souza', limit: 1000, ativo: true },
         { id: 12, name: 'Camila Rodrigues', limit: 2500, ativo: true },
@@ -93,8 +98,27 @@ export function buscarClientes(offset: number, limit: number): Cliente[] {
         { id: 53, name: 'Fábio Guimarães', limit: 1000, ativo: true },
         { id: 54, name: 'Vanessa Leal', limit: 2000, ativo: true }
     ];
-    const result = clientes.slice(offset, offset + limit)
-    return result
+
+    let clientesFiltrado = clientes
+    // filtra por nome
+
+    if (name != undefined) {
+        clientesFiltrado = clientesFiltrado.filter(cliente =>
+            cliente.name.toLocaleLowerCase().includes(name.toLowerCase())
+        )
+    }
+    if (ativo != undefined) {
+        clientesFiltrado = clientesFiltrado.filter(cliente =>
+            cliente.ativo === ativo
+        )
+    }
+    const result = clientesFiltrado.slice(offset, offset + limit)
+    return {
+        data: result,
+        total: clientesFiltrado.length
+    }
+
+
 }
 
 export function crearCliente(cliente: DadosCriacaoCliente): Cliente | null {
