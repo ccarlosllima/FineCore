@@ -21,7 +21,6 @@ export class Cliente implements ClienteInterface {
         public ativo: boolean
     ) { }
 
-
 }
 
 export function aumentarLimit(cliente: Cliente, valor: number): void {
@@ -40,7 +39,7 @@ export function buscarCliente(id: number): Cliente | null {
     )
 }
 
-export function buscarClientes(offset: number, limit: number, name?: string, ativo?: boolean): ResultadoPaginacao {
+export function buscarClientes(offset: number, limit: number, name?: string, ativo?: boolean): ResultadoPaginacao { 
 
     const clientes = [
         { id: 1, name: 'Carlos', limit: 500, ativo: false },
