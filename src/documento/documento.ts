@@ -1,24 +1,35 @@
 interface DocumentoInterface {
-    id: number
+    documentoId: number
     clienteId: number
-    sacado: string
-    valor: number
-    vencimento: string
+    documentoNomeSacado: string
+    documentoValor: number
+    documentoDataVencimento: string
     pago: boolean
 }
 
 export class Documento implements DocumentoInterface {
     constructor(
-        public id: number,
+        public documentoId: number,
         public clienteId: number,
-        public sacado: string,
-        public valor: number,
-        public vencimento: string,
+        public documentoNomeSacado: string,
+        public documentoValor: number,
+        public documentoDataVencimento: string,
         public pago: boolean,
     ) { }
 }
 
+export function cirarDocumento(documento: Documento) : Documento [] {
+    let arrayDocumento = []
+    arrayDocumento.push(documento)
+    return arrayDocumento
+}
+
 export function buscarDocumento(): Documento[] {
+    const documento1 = new Documento(1, 2, 'carlos lima', 5224, '12-07-2026', true)
+    return [documento1]
+}
+
+export function buscarDocumentoId(id: number): Documento[] {
     const documento1 = new Documento(1, 2, 'carlos lima', 5224, '12-07-2026', true)
     const documento2 = new Documento(2, 4, 'teresa lisbon', 1000, '12-11-2026', true)
     const documento3 = new Documento(3, 6, 'patrick jane', 2000, '10-08-2026', true)
@@ -33,7 +44,8 @@ export function buscarDocumento(): Documento[] {
         documento5
     ]
 }
-export function buscarDocumentoPorCliente(clienteId: number): Documento[] {
+
+export function buscarDocumentoPorCliente(clienteId: number): Documento [] {
     const documentos = buscarDocumento()
     const documentosCliente = documentos.filter(doc =>
         doc.clienteId === clienteId
@@ -41,18 +53,31 @@ export function buscarDocumentoPorCliente(clienteId: number): Documento[] {
     return documentosCliente
 }
 
-
 export function buscarDocumentosVencidos(): Documento[] {
     const documentos = buscarDocumento()
     const hoje = new Date()
-    hoje.setHours(0,0,0,0)
+    hoje.setHours(0, 0, 0, 0)
 
-    const documentosVencidos = documentos.filter(doc =>{ 
-        const [dia, mes, ano] = doc.vencimento.split('-').map(Number)
-        const dataVencimento = new Date(ano, mes-1, dia)
-        
+    const documentosVencidos = documentos.filter(doc => {
+        const [dia, mes, ano] = doc.documentoDataVencimento.split('-').map(Number)
+        const dataVencimento = new Date(ano, mes - 1, dia)
+
         return dataVencimento < hoje && doc.pago === false
     })
 
     return documentosVencidos
+    
 }
+
+export function atualizarDocumento(id: number) {
+    const documento = buscarDocumentoId(id)
+    return 'atualizado!'
+}
+
+export function deletarDocumento(id: number): null | boolean {
+    if (id !== 1) {
+        return null
+    }
+    return true
+}
+

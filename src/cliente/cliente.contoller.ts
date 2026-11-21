@@ -51,7 +51,7 @@ export function buscarClientesController(req: Request, res: Response) {
     })
 }
 
-export function atualizaClienteController(req: Request, res: Response) {
+export function atualizarClienteController(req: Request, res: Response) {
     const clienteId = obterId(req)
     const resultado = atualizarClienteSchema.safeParse(req.body)
     if (!resultado.success) {
@@ -61,7 +61,7 @@ export function atualizaClienteController(req: Request, res: Response) {
     return res.status(200).json(cliente)
 }
 
-export function deleteClienteController(req: Request, res: Response) {
+export function deletetarClienteController(req: Request, res: Response) {
     const clienteId = obterId(req)
     deleteClienteService(clienteId)
     return res.sendStatus(204)

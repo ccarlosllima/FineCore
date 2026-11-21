@@ -2,10 +2,10 @@ import { Router} from "express";
 import { middlewareValidation, middlewarePaginationValidation } from './cliente.middleware' 
 import {
     criarClienteController,
-    atualizaClienteController,
+    atualizarClienteController,
     buscarClienteController,
     buscarClientesController,
-    deleteClienteController
+    deletetarClienteController
 
 } from "./cliente.contoller";
 
@@ -14,7 +14,7 @@ const router = Router()
 router.get('/clientes', middlewarePaginationValidation, buscarClientesController) 
 router.get('/cliente/:id',middlewareValidation, buscarClienteController)
 router.post('/cliente', criarClienteController)
-router.patch('/cliente/:id',middlewareValidation, atualizaClienteController)
-router.delete('/cliente/:id',middlewareValidation, deleteClienteController)
+router.patch('/cliente/:id',middlewareValidation, atualizarClienteController)
+router.delete('/cliente/:id',middlewareValidation, deletetarClienteController)
 
 export default router
