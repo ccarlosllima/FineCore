@@ -1,6 +1,7 @@
 import {
     cirarDocumento,
     buscarDocumento,
+    buscarDocumentoId,
     buscarDocumentoPorCliente,
     buscarDocumentosVencidos,
     atualizarDocumento,
@@ -16,17 +17,23 @@ export function cirarDocumentoService(dadosDocumento: Documento): Documento[] {
     }
     return documento
 }
-
-
-export function buscarDocumentoService(): Documento [] {
-    const documento  = buscarDocumento()
+export function buscarDocumentoIdService(id: number): Documento {
+    const documento = buscarDocumentoId(id)
     if (!documento) {
         throw new AppError('documento não encontrado', 404)
     }
-    return  documento
+    return documento
 }
 
-export function buscarDocumentoClienteService(id: number): Documento [] {
+export function buscarDocumentosService(): Documento[] {
+    const documento = buscarDocumento()
+    if (!documento) {
+        throw new AppError('documento não encontrado', 404)
+    }
+    return documento
+}
+
+export function buscarDocumentoPorClienteService(id: number): Documento[] {
     let documento = buscarDocumentoPorCliente(id)
     if (!documento) {
         throw new AppError('documento não encontrado', 404)

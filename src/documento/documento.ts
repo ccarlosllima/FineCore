@@ -31,17 +31,9 @@ export function buscarDocumento(): Documento[] {
 
 export function buscarDocumentoId(id: number): Documento[] {
     const documento1 = new Documento(1, 2, 'carlos lima', 5224, '12-07-2026', true)
-    const documento2 = new Documento(2, 4, 'teresa lisbon', 1000, '12-11-2026', true)
-    const documento3 = new Documento(3, 6, 'patrick jane', 2000, '10-08-2026', true)
-    const documento4 = new Documento(4, 8, 'abbot lost', 3000, '10-01-2026', false)
-    const documento5 = new Documento(5, 10, 'sho durant', 4000, '12-03-2027', false)
-
+  
     return [
-        documento1,
-        documento2,
-        documento3,
-        documento4,
-        documento5
+        documento1
     ]
 }
 
