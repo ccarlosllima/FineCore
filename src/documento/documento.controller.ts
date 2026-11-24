@@ -30,6 +30,7 @@ export function buscarDocumentoController(req: Request, res: Response) {
         return res.status(400).json({ erro: "O id deve ser um numero" })
     }
     const documento = buscarDocumentoIdService(id)
+
     return res.status(200).json(documento)
 }
 

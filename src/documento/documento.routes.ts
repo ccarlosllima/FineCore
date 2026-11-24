@@ -5,12 +5,14 @@ import {
     buscarDocumentosController,
     buscarDocumentoPorClienteController,
     buscarDocumentoVencidoController,
+    buscarDocumentoController,
     editarDocumentoController,
     deleterDocumentoController
 } from "./documento.controller";
 const router = Router()
 //GET
 router.get('/documento', buscarDocumentosController)
+router.get('/documento/:id', buscarDocumentoController)
 router.get('/documentoVencido', buscarDocumentoVencidoController)
 router.get('/clientes/:id/documentos', buscarDocumentoPorClienteController)
 //===============================================================

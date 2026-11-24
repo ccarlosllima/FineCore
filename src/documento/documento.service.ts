@@ -17,7 +17,7 @@ export function cirarDocumentoService(dadosDocumento: Documento): Documento[] {
     }
     return documento
 }
-export function buscarDocumentoIdService(id: number): Documento {
+export function buscarDocumentoIdService(id: number){
     const documento = buscarDocumentoId(id)
     if (!documento) {
         throw new AppError('documento não encontrado', 404)
